@@ -1,0 +1,41 @@
+{
+  "name": "react_hooks_kata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/twddavidm1/react_hooks_kata.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/twddavidm1/react_hooks_kata/issues"
+  },
+  "homepage": "https://github.com/twddavidm1/react_hooks_kata#readme",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/html-webpack-plugin": "^3.2.3",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "@types/webpack": "^4.41.17",
+    "awesome-typescript-loader": "^5.2.1",
+    "html-webpack-plugin": "^4.3.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "scripts": {
+    "dev": "webpack-dev-server --open --config webpack.dev.ts",
+    "build": "webpack --mode production --config webpack.prod.ts"
+  }
+}
