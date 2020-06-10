@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server --open --config webpack.dev.ts",
+    "build": "webpack --mode production --config webpack.prod.ts"
   },
   "repository": {
     "type": "git",
@@ -17,25 +18,44 @@
     "url": "https://github.com/twddavidm1/react_hooks_kata/issues"
   },
   "homepage": "https://github.com/twddavidm1/react_hooks_kata#readme",
+  "jest": {
+    "verbose": true
+  },
   "dependencies": {
+    "bootstrap": "^4.5.0",
+    "css-loader": "^3.5.3",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-bootstrap": "^1.0.1",
+    "react-dom": "^16.13.1",
+    "style-loader": "^1.2.1"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.9.0",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/html-webpack-plugin": "^3.2.3",
+    "@types/jest": "^24.0.9",
     "@types/react": "^16.9.35",
     "@types/react-dom": "^16.9.8",
     "@types/webpack": "^4.41.17",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.4",
+    "@babel/plugin-proposal-optional-chaining": "7.8.3",
+    "@babel/register": "^7.0.0",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
     "awesome-typescript-loader": "^5.2.1",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-module-resolver": "^3.2.0",
+    "enzyme": "^3.11.0",
     "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.0.1",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.11.0"
-  },
-  "scripts": {
-    "dev": "webpack-dev-server --open --config webpack.dev.ts",
-    "build": "webpack --mode production --config webpack.prod.ts"
+    "webpack-dev-server": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2"
   }
 }

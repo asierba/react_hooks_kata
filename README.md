@@ -16,4 +16,10 @@ My goals for this kata is to have an app that:
 
 Keep in mind that you should do these features sequentially.
 
+### Run the app
+```npm run dev```
+
+### Test the app
+```jest```
+
 ### Thanks for helping me :-)
