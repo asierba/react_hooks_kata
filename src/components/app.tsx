@@ -1,8 +1,8 @@
 import * as React from "react";
-import {ContactList} from "./ContactList";
+import { ContactList2 } from './ContactList';
 
 export interface IAppProps {}
 
 export default function IApp(props: IAppProps) {
-    return <ContactList></ContactList>;
+    return <ContactList2/>;
 }
