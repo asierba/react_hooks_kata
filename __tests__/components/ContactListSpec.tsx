@@ -1,7 +1,6 @@
 import * as Enzyme from "enzyme";
 import {shallow} from "enzyme";
-import {ContactList2} from "../../src/components/ContactList";
-import {Contact} from "../../models/Contact";
+import {ContactList} from "../../src/components/ContactList";
 import * as React from "react";
 import Adapter from 'enzyme-adapter-react-16';
 
@@ -10,17 +9,20 @@ Enzyme.configure({
 });
 
 describe("Contact list functionality", () => {
-    const contacts = [
-        new Contact("123456", "Papi"),
-        new Contact("789101", "Mami")
-    ];
-    const setContacts: any = jest.fn();
-    const useStateMock: any = (initState: any) => [contacts, setContacts];
-    jest.spyOn(React, 'useState').mockImplementation(useStateMock);
-    it("Should render a table with fixed elements", () => {
+    it("Should render no contacts in initial state", () => {
         const contactList = shallow(
-            <ContactList2 useState={useStateMock}/>
+            <ContactList/>
         );
-        expect(contactList.find(HTMLTableRowElement)).toHaveLength(2);
+        expect(contactList.find('.contact')).toHaveLength(0);
+    });
+    it("Should render a new contact when button is pressed", (done) => {
+        const contactList = shallow(
+            <ContactList/>
+        );
+        contactList.find('button').simulate('click');
+        setImmediate(() => {
+            expect(contactList.find('.contact')).toHaveLength(1);
+            done();
+        })
     });
 });
