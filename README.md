@@ -8,7 +8,7 @@ I want to create an app that contains a list of contacts because I tend to forge
 
 My goals for this kata is to have an app that:
 
-- Load my contact list dynamically based on my state
+- Load my contact list dynamically based on react hooks
 - Add a new contact to my state (useState)
 - Mark a contact as favorite (useEffect)
 - Filter contacts by name (useCallback)
