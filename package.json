@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --open --config webpack.dev.ts",
+    "start": "npm run dev",
     "build": "webpack --mode production --config webpack.prod.ts",
     "test": "jest test"
   },
