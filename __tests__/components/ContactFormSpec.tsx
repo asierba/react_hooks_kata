@@ -8,13 +8,13 @@ Enzyme.configure({
     adapter: new Adapter(),
 });
 
-xdescribe("Contact form functionality", () => {
-    it("Should render contacts with default value", () => {
+describe("Contact form functionality", () => {
+    it("Should render contacts with name and phone inputs", () => {
         const contactForm = shallow(
             <ContactForm/>
         );
-        //expect(contactForm.find('.name')).toHaveLength(1);
-        //expect(contactForm.find('.phone')).toHaveLength(1);
+        expect(contactForm.find('.name')).toHaveLength(1);
+        expect(contactForm.find('.phone')).toHaveLength(1);
     });
 
 });
