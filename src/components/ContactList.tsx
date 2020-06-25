@@ -1,14 +1,15 @@
 import * as React from 'react';
 import {useState} from 'react';
-import {Contact} from '../../models/Contact';
+import {Contact, Phone, Name} from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
+
 
 const initialState = {
     contacts: [] as Contact[]
 };
 
 function addContact(contacts: Contact[], setContacts: any) {
-    return () => setContacts(contacts.concat(new Contact('555123123','pepe')));
+    return () => setContacts(contacts.concat(new Contact(new Phone('555123123'),new Name('pepe'))));
 }
 
 export const ContactList = () => {
@@ -26,9 +27,9 @@ export const ContactList = () => {
                 <tbody>
                 {contacts.map(contact => {
                     return (
-                        <tr className="contact" key={contact.name.toString()}>
-                            <td data-id="name">{contact.name}</td>
-                            <td data-id="phone">{contact.phone}</td>
+                        <tr className="contact" key={contact.name.value.toString()}>
+                            <td data-id="name">{contact.name.value}</td>
+                            <td data-id="phone">{contact.phone.value}</td>
                         </tr>
                     )
                 })}
