@@ -8,7 +8,7 @@ const initialState = {
 };
 
 function addContact(contacts: Contact[], setContacts: any) {
-    return () => setContacts(contacts.concat(new Contact(Math.random().toString(), Math.random().toString())));
+    return () => setContacts(contacts.concat(new Contact('555123123','pepe')));
 }
 
 export const ContactList = () => {
@@ -27,8 +27,8 @@ export const ContactList = () => {
                 {contacts.map(contact => {
                     return (
                         <tr className="contact" key={contact.name.toString()}>
-                            <td>{contact.name}</td>
-                            <td>{contact.phone}</td>
+                            <td data-id="name">{contact.name}</td>
+                            <td data-id="phone">{contact.phone}</td>
                         </tr>
                     )
                 })}

@@ -25,4 +25,21 @@ describe("Contact list functionality", () => {
             done();
         })
     });
+    it("Should render a specific contact when button is pressed", (done) => {
+        const contactList = shallow(
+            <ContactList/>
+        );
+
+
+        contactList.find('button').simulate('click');
+
+
+        setImmediate(() => {
+            expect(contactList.find('.contact')).toHaveLength(1);
+            expect(contactList.find('.contact').first().find('[data-id="name"]').text()).toBe('pepe');
+            expect(contactList.find('.contact').first().find('[data-id="phone"]').text()).toBe('555123123');
+            done();
+        })
+    });
+
 });
