@@ -35,6 +35,8 @@ export const ContactList = () => {
                 })}
                 </tbody>
             </Table>
+            <input type="text" data-id="input-name" />
+            <input type="text" data-id="input-phone" />
             <button onClick={addContact(contacts, setContacts)}>Añade nuevo contacto</button>
         </>
     );

@@ -15,29 +15,26 @@ describe("Contact list functionality", () => {
         );
         expect(contactList.find('.contact')).toHaveLength(0);
     });
-    it("Should render a new contact when button is pressed", (done) => {
-        const contactList = shallow(
-            <ContactList/>
-        );
-        contactList.find('button').simulate('click');
-        setImmediate(() => {
-            expect(contactList.find('.contact')).toHaveLength(1);
-            done();
-        })
-    });
+
     it("Should render a specific contact when button is pressed", (done) => {
         const contactList = shallow(
             <ContactList/>
+
         );
+        const name = 'pepe';
+        const phone = '555123123';
 
-
+        contactList.find('[data-id="input-name"]').simulate('change', { target: { value: name } })
+        contactList.find('[data-id="input-phone"]').simulate('change', { target: { value: phone } })
         contactList.find('button').simulate('click');
 
 
         setImmediate(() => {
             expect(contactList.find('.contact')).toHaveLength(1);
-            expect(contactList.find('.contact').first().find('[data-id="name"]').text()).toBe('pepe');
-            expect(contactList.find('.contact').first().find('[data-id="phone"]').text()).toBe('555123123');
+
+            expect(contactList.find('.contact').first().find('[data-id="name"]').text()).toBe(name);
+
+            expect(contactList.find('.contact').first().find('[data-id="phone"]').text()).toBe(phone);
             done();
         })
     });
