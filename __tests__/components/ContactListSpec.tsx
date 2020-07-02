@@ -21,8 +21,8 @@ describe("Contact list functionality", () => {
             <ContactList/>
 
         );
-        const name = 'pepe';
-        const phone = '555123123';
+        const name = 'david';
+        const phone = '123456789';
 
         contactList.find('[data-id="input-name"]').simulate('change', { target: { value: name } })
         contactList.find('[data-id="input-phone"]').simulate('change', { target: { value: phone } })
