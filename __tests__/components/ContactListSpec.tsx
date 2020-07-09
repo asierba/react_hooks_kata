@@ -31,9 +31,7 @@ describe("Contact list functionality", () => {
 
         setImmediate(() => {
             expect(contactList.find('.contact')).toHaveLength(1);
-
             expect(contactList.find('.contact').first().find('[data-id="name"]').text()).toBe(name);
-
             expect(contactList.find('.contact').first().find('[data-id="phone"]').text()).toBe(phone);
             done();
         })

@@ -2,22 +2,14 @@ import * as React from 'react';
 import {useState} from 'react';
 import {Contact, Name, Phone} from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
-
-
-const initialState = {
-    contacts: [] as Contact[],
-    inputName: String,
-    inputPhone: String
-};
-
 function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
     return contacts.concat(new Contact(new Phone(inputPhone), new Name(inputName)));
 }
 
 export const ContactList = () => {
-    const [contacts, setContacts] = useState(initialState.contacts);
-    const [inputName, setInputName] = useState(initialState.inputName);
-    const [inputPhone, setInputPhone] = useState(initialState.inputPhone);
+    const [contacts, setContacts] = useState([]);
+    const [inputName, setInputName] = useState('');
+    const [inputPhone, setInputPhone] = useState('');
 
     return (
         <>
