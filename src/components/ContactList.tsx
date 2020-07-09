@@ -3,7 +3,9 @@ import {useState} from 'react';
 import {Contact, Name, Phone} from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
 function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
-    return contacts.concat(new Contact(new Phone(inputPhone), new Name(inputName)));
+    const allContacts = contacts.concat(new Contact(new Phone(inputPhone), new Name(inputName)));
+    localStorage.setItem('contacts', JSON.stringify(allContacts));
+    return allContacts;
 }
 
 export const ContactList = () => {

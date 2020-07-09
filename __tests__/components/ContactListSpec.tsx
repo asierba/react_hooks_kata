@@ -34,7 +34,27 @@ describe("Contact list functionality", () => {
             expect(contactList.find('.contact').first().find('[data-id="name"]').text()).toBe(name);
             expect(contactList.find('.contact').first().find('[data-id="phone"]').text()).toBe(phone);
             done();
-        })
+        });
+    });
+
+
+    it ("Should save new added contact",(done) => {
+        const contactList = shallow(
+            <ContactList/>
+
+        );
+        const name = 'david';
+        const phone = '123456789';
+
+        contactList.find('[data-id="input-name"]').simulate('change', { target: { value: name } })
+        contactList.find('[data-id="input-phone"]').simulate('change', { target: { value: phone } })
+        contactList.find('button').simulate('click');
+
+
+        setImmediate(() => {
+            expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone: {value: phone}, name: {value: name}}]));
+            done();
+        });
     });
 
 });
