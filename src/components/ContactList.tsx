@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Contact, Name, Phone} from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
 function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
@@ -12,6 +12,12 @@ export const ContactList = () => {
     const [contacts, setContacts] = useState([]);
     const [inputName, setInputName] = useState('');
     const [inputPhone, setInputPhone] = useState('');
+
+    useEffect(() => {
+        const allContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
+        setContacts(allContacts);
+
+    },[]);
 
     return (
         <>
