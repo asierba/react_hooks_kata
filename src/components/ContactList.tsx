@@ -1,9 +1,10 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import {Contact, Name, Phone} from '../../models/Contact';
+import {Contact} from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
+
 function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
-    const allContacts = contacts.concat(new Contact(new Phone(inputPhone), new Name(inputName)));
+    const allContacts = contacts.concat(new Contact(inputPhone, inputName));
     localStorage.setItem('contacts', JSON.stringify(allContacts));
     return allContacts;
 }
@@ -31,9 +32,9 @@ export const ContactList = () => {
                 <tbody>
                 {contacts.map(contact => {
                     return (
-                        <tr className="contact" key={contact.name.value.toString()}>
-                            <td data-id="name">{contact.name.value}</td>
-                            <td data-id="phone">{contact.phone.value}</td>
+                        <tr className="contact" key={contact.name}>
+                            <td data-id="name">{contact.name}</td>
+                            <td data-id="phone">{contact.phone}</td>
                         </tr>
                     )
                 })}

@@ -58,7 +58,8 @@ describe("Contact list functionality", () => {
 
 
         setImmediate(() => {
-            expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone: {value: phone}, name: {value: name}}]));
+            expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name}]));
+
             done();
         });
     });
@@ -68,7 +69,7 @@ describe("Contact list functionality", () => {
         const name = 'tirateUnPaso';
         const phone = '3141592';
 
-        localStorage.setItem('contacts', JSON.stringify([{phone: {value: phone}, name: {value: name}}]));
+        localStorage.setItem('contacts', JSON.stringify([{phone, name}]));
 
         const contactList = mount(
             <ContactList/>
