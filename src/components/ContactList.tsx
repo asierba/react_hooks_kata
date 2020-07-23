@@ -9,6 +9,12 @@ function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
     return allContacts;
 }
 
+function setAsFav(contacts: Contact[], contact: Contact){
+    console.log('fav');
+    contact.isFavorite = true;
+    //TODO:Modify the list and save
+}
+
 export const ContactList = () => {
     const [contacts, setContacts] = useState([]);
     const [inputName, setInputName] = useState('');
@@ -28,6 +34,7 @@ export const ContactList = () => {
                 <tr>
                     <td>Nombre</td>
                     <td>Número</td>
+                    <td>Fav!</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -36,6 +43,7 @@ export const ContactList = () => {
                         <tr className="contact" key={contact.name}>
                             <td data-id="name">{contact.name}</td>
                             <td data-id="phone">{contact.phone}</td>
+                            <td><button onClick={() => setAsFav(contacts,contact)}>Fav</button></td>
                         </tr>
                     )
                 })}

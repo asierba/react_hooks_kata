@@ -58,7 +58,7 @@ describe("Contact list functionality", () => {
 
     setImmediate(() => {
       expect(localStorage.getItem("contacts")).toBe(
-        JSON.stringify([{ phone, name }])
+        JSON.stringify([{ phone, name, isFavorite: false }])
       );
 
       expect(JSON.parse(localStorage.getItem("contacts"))).toEqual(
@@ -68,6 +68,7 @@ describe("Contact list functionality", () => {
         .toMatchInlineSnapshot(`
         Array [
           Object {
+            "isFavorite": false,
             "name": "david",
             "phone": "123456789",
           },
