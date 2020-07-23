@@ -14,6 +14,7 @@ export const ContactList = () => {
     const [inputName, setInputName] = useState('');
     const [inputPhone, setInputPhone] = useState('');
 
+
     useEffect(() => {
         const allContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
         setContacts(allContacts);
