@@ -114,6 +114,9 @@ describe("Contact list functionality", () => {
       expect(
           JSON.parse(localStorage.getItem('contacts'))[0].isFavorite
       ).toBe(true);
+      expect(
+          contactList.find(".contact").first().hasClass('favorite')
+      ).toBe(true);
       done();
     });
   });

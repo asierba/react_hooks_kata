@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Contact} from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
 
@@ -9,24 +9,21 @@ function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
     return allContacts;
 }
 
-function setAsFav(contacts: Contact[], favContact: Contact){
-    favContact.isFavorite = true;
-    const modifiedContactList = contacts
-        .map(contact => contact.phone === favContact.phone ? favContact : contact);
-    localStorage.setItem('contacts', JSON.stringify(modifiedContactList));
-}
 
 export const ContactList = () => {
-    const [contacts, setContacts] = useState([]);
+    const [contacts, setContacts] = useState<Contact[]>(JSON.parse(localStorage.getItem('contacts') || '[]'));
     const [inputName, setInputName] = useState('');
     const [inputPhone, setInputPhone] = useState('');
 
+    const setAsFav = useCallback((favContact: Contact) =>  {
+        favContact.isFavorite = true;
+        setContacts(contacts.map(contact => contact.phone === favContact.phone ? favContact : contact));
+    },[contacts]);
 
     useEffect(() => {
-        const allContacts = JSON.parse(localStorage.getItem('contacts') || '[]');
-        setContacts(allContacts);
+        localStorage.setItem('contacts', JSON.stringify(contacts));
+    },[contacts]);
 
-    },[]);
 
     return (
         <>
@@ -44,7 +41,7 @@ export const ContactList = () => {
                         <tr className={ `contact ${contact.isFavorite ? "favorite" : ""}` } key={contact.name}>
                             <td data-id="name">{contact.name}</td>
                             <td data-id="phone">{contact.phone}</td>
-                            <td><button data-id="fav" onClick={() => setAsFav(contacts,contact)}>Fav</button></td>
+                            <td><button data-id="fav" onClick={() => setAsFav(contact)}>Fav</button></td>
                         </tr>
                     )
                 })}
