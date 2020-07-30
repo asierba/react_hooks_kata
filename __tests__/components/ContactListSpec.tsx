@@ -95,6 +95,9 @@ describe("Contact list functionality", () => {
     expect(
       contactList.find(".contact").first().find('[data-id="phone"]').text()
     ).toBe(phone);
+    expect(
+        contactList.find(".contact").first().hasClass('favorite')
+    ).toBe(false);
   });
 
   it("Should add contact as favorite", (done) => {
@@ -113,10 +116,18 @@ describe("Contact list functionality", () => {
       ).toBe(true);
       done();
     });
-
-
-
-
-
   });
+
+  it("Should render a fav contact ", () => {
+    const name = "tirateUnPaso";
+    const phone = "3141592";
+    const isFavorite = true;
+
+    localStorage.setItem("contacts", JSON.stringify([new Contact(phone, name, isFavorite)]));
+    const contactList = mount(<ContactList />);
+
+    expect(
+        contactList.find(".contact").first().hasClass('favorite')
+    ).toBe(true);
+  })
 });

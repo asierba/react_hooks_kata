@@ -41,7 +41,7 @@ export const ContactList = () => {
                 <tbody>
                 {contacts.map(contact => {
                     return (
-                        <tr className="contact" key={contact.name}>
+                        <tr className={ `contact ${contact.isFavorite ? "favorite" : ""}` } key={contact.name}>
                             <td data-id="name">{contact.name}</td>
                             <td data-id="phone">{contact.phone}</td>
                             <td><button data-id="fav" onClick={() => setAsFav(contacts,contact)}>Fav</button></td>

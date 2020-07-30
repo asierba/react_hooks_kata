@@ -4,10 +4,10 @@ export class Contact{
     name: string;
     isFavorite: boolean;
 
-    constructor(phone: string, name: string){
+    constructor(phone: string, name: string, isFavorite: boolean = false){
         this.phone = phone;
         this.name = name;
-        this.isFavorite = false;
+        this.isFavorite = isFavorite;
     }
 }
 
