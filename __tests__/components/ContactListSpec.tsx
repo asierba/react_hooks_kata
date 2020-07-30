@@ -1,8 +1,9 @@
 import * as Enzyme from "enzyme";
-import { mount } from "enzyme";
-import { ContactList } from "../../src/components/ContactList";
+import {mount} from "enzyme";
+import {ContactList} from "../../src/components/ContactList";
 import * as React from "react";
 import Adapter from "enzyme-adapter-react-16";
+import {Contact} from "../../models/Contact";
 
 Enzyme.configure({
   adapter: new Adapter(),
@@ -96,11 +97,11 @@ describe("Contact list functionality", () => {
     ).toBe(phone);
   });
 
-  it.skip("Should add contact as favorite", (done) => {
+  it("Should add contact as favorite", (done) => {
     const name = "tirateUnPaso";
     const phone = "3141592";
 
-    localStorage.setItem("contacts", JSON.stringify([{ phone, name }]));
+    localStorage.setItem("contacts", JSON.stringify([new Contact(phone, name)]));
 
     const contactList = mount(<ContactList />);
 

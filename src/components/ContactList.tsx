@@ -9,10 +9,11 @@ function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
     return allContacts;
 }
 
-function setAsFav(contacts: Contact[], contact: Contact){
-    console.log('fav');
-    contact.isFavorite = true;
-    //TODO:Modify the list and save
+function setAsFav(contacts: Contact[], favContact: Contact){
+    favContact.isFavorite = true;
+    const modifiedContactList = contacts
+        .map(contact => contact.phone === favContact.phone ? favContact : contact);
+    localStorage.setItem('contacts', JSON.stringify(modifiedContactList));
 }
 
 export const ContactList = () => {
@@ -43,7 +44,7 @@ export const ContactList = () => {
                         <tr className="contact" key={contact.name}>
                             <td data-id="name">{contact.name}</td>
                             <td data-id="phone">{contact.phone}</td>
-                            <td><button onClick={() => setAsFav(contacts,contact)}>Fav</button></td>
+                            <td><button data-id="fav" onClick={() => setAsFav(contacts,contact)}>Fav</button></td>
                         </tr>
                     )
                 })}
