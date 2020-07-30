@@ -95,4 +95,27 @@ describe("Contact list functionality", () => {
       contactList.find(".contact").first().find('[data-id="phone"]').text()
     ).toBe(phone);
   });
+
+  it.skip("Should add contact as favorite", (done) => {
+    const name = "tirateUnPaso";
+    const phone = "3141592";
+
+    localStorage.setItem("contacts", JSON.stringify([{ phone, name }]));
+
+    const contactList = mount(<ContactList />);
+
+    contactList.find(".contact").first().find('[data-id="fav"]').simulate('click');
+
+    setImmediate(()=> {
+      expect(
+          JSON.parse(localStorage.getItem('contacts'))[0].isFavorite
+      ).toBe(true);
+      done();
+    });
+
+
+
+
+
+  });
 });
