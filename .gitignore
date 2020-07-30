@@ -4,3 +4,4 @@ config/*.json
 *.log
 .reports
 src/components/Icon/IconNames.ts
+.idea/
