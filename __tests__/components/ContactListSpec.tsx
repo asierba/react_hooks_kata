@@ -4,6 +4,7 @@ import {ContactList} from "../../src/components/ContactList";
 import * as React from "react";
 import Adapter from "enzyme-adapter-react-16";
 import {Contact} from "../../models/Contact";
+import faker from "faker";
 
 Enzyme.configure({
   adapter: new Adapter(),
@@ -16,9 +17,9 @@ describe("Contact list functionality", () => {
   });
 
   describe("With localStorage", () => {
-    const anyName = "tirateUnPaso";
-    const anyPhone = "3141592";
-    const otherPhone = "31415926";
+    const anyName = faker.name.firstName();
+    const anyPhone = faker.phone.phoneNumber();
+    const otherPhone = faker.phone.phoneNumber();
 
     beforeEach(() => {
       localStorage.setItem("contacts", JSON.stringify([
@@ -74,8 +75,8 @@ describe("Contact list functionality", () => {
 
     it("Should save new added contact", (done) => {
       const contactList = mount(<ContactList />);
-      const name = "david";
-      const phone = "123456789";
+      const name = faker.name.firstName();
+      const phone = faker.phone.phoneNumber();
 
       contactList
           .find('[data-id="input-name"]')
@@ -90,20 +91,6 @@ describe("Contact list functionality", () => {
             JSON.stringify([{ phone, name, isFavorite: false }])
         );
 
-        expect(JSON.parse(localStorage.getItem("contacts"))).toEqual(
-            expect.arrayContaining([expect.objectContaining({ name })])
-        );
-        expect(JSON.parse(localStorage.getItem("contacts")))
-            .toMatchInlineSnapshot(`
-        Array [
-          Object {
-            "isFavorite": false,
-            "name": "david",
-            "phone": "123456789",
-          },
-        ]
-      `);
-
         done();
       });
     });
@@ -115,8 +102,8 @@ describe("Contact list functionality", () => {
 
     it("Should render a specific contact when button is pressed", (done) => {
       const contactList = mount(<ContactList />);
-      const name = "david";
-      const phone = "123456789";
+      const name = faker.name.firstName();
+      const phone = faker.phone.phoneNumber();
 
       contactList
           .find('[data-id="input-name"]')
