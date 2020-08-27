@@ -59,17 +59,14 @@ describe('Contact list functionality', () => {
 
     describe('Without localStorage', () => {
         it('Should save new added contact', (done) => {
-            const contactList = mount(<ContactList />);
+            render(<ContactList />);
             const name = faker.name.firstName();
             const phone = faker.phone.phoneNumber();
-
-            contactList.find('[data-id="input-name"]').simulate('change', { target: { value: name } });
-            contactList.find('[data-id="input-phone"]').simulate('change', { target: { value: phone } });
-            contactList.find('button').simulate('click');
-
+            fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: name }});
+            fireEvent.change(screen.getByLabelText('Número'), { target: { value: phone }});
+            fireEvent.click(screen.getByRole('button'));
             setImmediate(() => {
-                expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{ phone, name, isFavorite: false }]));
-
+                expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name, isFavorite: false}]));
                 done();
             });
         });

@@ -47,8 +47,10 @@ export const ContactList = () => {
                 })}
                 </tbody>
             </Table>
-            <input type="text" data-id="input-name" onChange={(event: any) => setInputName(event.target.value) } />
-            <input type="text" data-id="input-phone" onChange={(event: any) => setInputPhone(event.target.value) } />
+            <label htmlFor="input-name">Nombre</label>
+            <input type="text" id="input-name" onChange={(event: any) => setInputName(event.target.value) } />
+            <label htmlFor="input-phone">Número</label>
+            <input type="text" id="input-phone" onChange={(event: any) => setInputPhone(event.target.value) } />
             <button
                 onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>Añade nuevo contacto</button>
         </>
