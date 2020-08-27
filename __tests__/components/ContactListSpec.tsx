@@ -5,8 +5,7 @@ import * as React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { Contact } from '../../models/Contact';
 import faker from 'faker';
-import { render, getRoles, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 Enzyme.configure({
     adapter: new Adapter(),
@@ -34,18 +33,17 @@ describe('Contact list functionality', () => {
             expect(screen.getAllByRole('row')).toHaveLength(contactList.length + 1);
             expect(screen.getByText(anyName)).toBeInTheDocument();
             expect(screen.getByText(anyPhone)).toBeInTheDocument();
-            expect(screen.getAllByText('Fav')[0]).not.toHaveClass('favorite');
-            // expect(contactList.find('.contact').first().hasClass('favorite')).toBe(false);
+            expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
         });
 
         it('Should add contact as favorite', (done) => {
-            const contactList = mount(<ContactList />);
+            render(<ContactList />);
 
-            contactList.find('.contact').first().find('[data-id="fav"]').simulate('click');
+            fireEvent.click(screen.getAllByText('Fav')[0]);
 
             setImmediate(() => {
                 expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
-                expect(contactList.find('.contact').first().hasClass('favorite')).toBe(true);
+                expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
                 done();
             });
         });
