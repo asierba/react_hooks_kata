@@ -1,11 +1,11 @@
 import * as Enzyme from 'enzyme';
-import { mount } from 'enzyme';
-import { ContactList } from '../../src/components/ContactList';
+import {mount} from 'enzyme';
+import {ContactList} from '../../src/components/ContactList';
 import * as React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import { Contact } from '../../models/Contact';
+import {Contact} from '../../models/Contact';
 import faker from 'faker';
-import { fireEvent, render, screen } from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 
 Enzyme.configure({
     adapter: new Adapter(),
@@ -49,13 +49,10 @@ describe('Contact list functionality', () => {
         });
 
         it('Should render a fav contact ', () => {
-            const contactList = mount(<ContactList />);
-
-            expect(
-                contactList
-                    .find('.contact')
-                    .map((node) => node.hasClass('favorite'))
-                    .some((x) => x) // ???
+            render(<ContactList />);
+            expect(screen.getAllByRole('row')
+                .map(node => node.className)
+                .some(className => className.includes('favorite'))
             ).toBe(true);
         });
     });

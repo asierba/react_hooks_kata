@@ -22,4 +22,9 @@ Keep in mind that you should do these features sequentially.
 ### Test the app
 ```jest```
 
+### Current State
+- Fav is not being toggled
+- Validation for repeated numbers
+- 
+
 ### Thanks for helping me :-)
