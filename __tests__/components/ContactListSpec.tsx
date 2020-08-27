@@ -1,11 +1,10 @@
 import * as Enzyme from 'enzyme';
-import {mount} from 'enzyme';
 import {ContactList} from '../../src/components/ContactList';
 import * as React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import {Contact} from '../../models/Contact';
 import faker from 'faker';
-import {fireEvent, render, screen} from '@testing-library/react';
+import {fireEvent, render, screen, within} from '@testing-library/react';
 
 Enzyme.configure({
     adapter: new Adapter(),
@@ -72,23 +71,22 @@ describe('Contact list functionality', () => {
         });
 
         it('Should render no contacts in initial state', () => {
-            const contactList = mount(<ContactList />);
-            expect(contactList.find('.contact')).toHaveLength(0);
+            render(<ContactList />);
+            expect(screen.getAllByRole('row')).toHaveLength(1);
         });
 
         it('Should render a specific contact when button is pressed', (done) => {
-            const contactList = mount(<ContactList />);
+            render(<ContactList />);
             const name = faker.name.firstName();
             const phone = faker.phone.phoneNumber();
-
-            contactList.find('[data-id="input-name"]').simulate('change', { target: { value: name } });
-            contactList.find('[data-id="input-phone"]').simulate('change', { target: { value: phone } });
-            contactList.find('button').simulate('click');
-
+            fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: name }});
+            fireEvent.change(screen.getByLabelText('Número'), { target: { value: phone }});
+            fireEvent.click(screen.getByRole('button'));
             setImmediate(() => {
-                expect(contactList.find('.contact')).toHaveLength(1);
-                expect(contactList.find('.contact').first().find('[data-id="name"]').text()).toBe(name);
-                expect(contactList.find('.contact').first().find('[data-id="phone"]').text()).toBe(phone);
+                expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name, isFavorite: false}]));
+                expect(screen.getAllByRole('row')).toHaveLength(2);
+                expect(within(screen.getAllByRole('row')[1]).getByRole('name').textContent).toBe(name);
+                expect(within(screen.getAllByRole('row')[1]).getByRole('phone').textContent).toBe(phone);
                 done();
             });
         });
