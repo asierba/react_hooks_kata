@@ -57,19 +57,6 @@ describe('Contact list functionality', () => {
     });
 
     describe('Without localStorage', () => {
-        it('Should save new added contact', (done) => {
-            render(<ContactList />);
-            const name = faker.name.firstName();
-            const phone = faker.phone.phoneNumber();
-            fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: name }});
-            fireEvent.change(screen.getByLabelText('Número'), { target: { value: phone }});
-            fireEvent.click(screen.getByRole('button'));
-            setImmediate(() => {
-                expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name, isFavorite: false}]));
-                done();
-            });
-        });
-
         it('Should render no contacts in initial state', () => {
             render(<ContactList />);
             expect(screen.getAllByRole('row')).toHaveLength(1);
