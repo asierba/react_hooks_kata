@@ -29,18 +29,6 @@ describe('Contact list functionality', () => {
             expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
         });
 
-        it('Should add contact as favorite', (done) => {
-            render(<ContactList />);
-
-            fireEvent.click(screen.getAllByText('Fav')[0]);
-
-            setImmediate(() => {
-                expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
-                expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
-                done();
-            });
-        });
-
         it('Should render a fav contact ', () => {
             render(<ContactList />);
             expect(screen.getAllByRole('row')
@@ -49,15 +37,18 @@ describe('Contact list functionality', () => {
             ).toBe(true);
         });
 
-        it('Should remove contact as favorite', (done) => {
+        it('Should toggle contact as favorite', (done) => {
             render(<ContactList />);
 
+            var isFavorite = JSON.parse(localStorage.getItem('contacts'))[0].isFavorite;
             fireEvent.click(screen.getAllByText('Fav')[0]);
-
             setImmediate(() => {
+                expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(!isFavorite);
+                expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
+
                 fireEvent.click(screen.getAllByText('Fav')[0]);
                 setImmediate(() => {
-                    expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
+                    expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(isFavorite);
                     expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
                     done();
                 });
