@@ -1,14 +1,8 @@
-import * as Enzyme from 'enzyme';
 import {ContactList} from '../../src/components/ContactList';
 import * as React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
 import {Contact} from '../../models/Contact';
 import faker from 'faker';
 import {fireEvent, render, screen, within} from '@testing-library/react';
-
-Enzyme.configure({
-    adapter: new Adapter(),
-});
 
 describe('Contact list functionality', () => {
     beforeEach(() => {
