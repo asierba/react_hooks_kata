@@ -13,14 +13,11 @@ describe('Contact list functionality', () => {
         const anyName = faker.name.firstName();
         const anyOtherName = faker.name.firstName();
         const anyPhone = faker.phone.phoneNumber();
-        const otherPhone = faker.phone.phoneNumber();
-        const contactList = [new Contact(anyPhone, anyName, false), new Contact(otherPhone, anyOtherName, true)];
-
-        beforeEach(() => {
-            localStorage.setItem('contacts', JSON.stringify(contactList));
-        });
+        const anyOtherPhone = faker.phone.phoneNumber();
 
         it('Should load contacts from localstorage', () => {
+            const contactList = [new Contact(anyPhone, anyName, false), new Contact(anyOtherPhone, anyOtherName, true)];
+            localStorage.setItem('contacts', JSON.stringify(contactList));
             render(<ContactList />);
 
             expect(screen.getAllByRole('row')).toHaveLength(contactList.length + 1);
@@ -29,26 +26,19 @@ describe('Contact list functionality', () => {
             expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
         });
 
-        it('Should render a fav contact ', () => {
-            render(<ContactList />);
-            expect(screen.getAllByRole('row')
-                .map(node => node.className)
-                .some(className => className.includes('favorite'))
-            ).toBe(true);
-        });
-
         it('Should toggle contact as favorite', (done) => {
+            const contactList = [new Contact(anyPhone, anyName, false)];
+            localStorage.setItem('contacts', JSON.stringify(contactList));
             render(<ContactList />);
 
-            var isFavorite = JSON.parse(localStorage.getItem('contacts'))[0].isFavorite;
             fireEvent.click(screen.getAllByText('Fav')[0]);
             setImmediate(() => {
-                expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(!isFavorite);
+                expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
                 expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
 
                 fireEvent.click(screen.getAllByText('Fav')[0]);
                 setImmediate(() => {
-                    expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(isFavorite);
+                    expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
                     expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
                     done();
                 });
