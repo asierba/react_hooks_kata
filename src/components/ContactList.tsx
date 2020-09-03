@@ -16,7 +16,7 @@ export const ContactList = () => {
     const [inputPhone, setInputPhone] = useState('');
 
     const setAsFav = useCallback((favContact: Contact) =>  {
-        favContact.isFavorite = true;
+        favContact.isFavorite = !favContact.isFavorite;
         setContacts(contacts.map(contact => contact.phone === favContact.phone ? favContact : contact));
     },[contacts]);
 

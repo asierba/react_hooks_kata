@@ -48,6 +48,21 @@ describe('Contact list functionality', () => {
                 .some(className => className.includes('favorite'))
             ).toBe(true);
         });
+
+        it('Should remove contact as favorite', (done) => {
+            render(<ContactList />);
+
+            fireEvent.click(screen.getAllByText('Fav')[0]);
+
+            setImmediate(() => {
+                fireEvent.click(screen.getAllByText('Fav')[0]);
+                setImmediate(() => {
+                    expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
+                    expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
+                    done();
+                });
+            });
+        });
     });
 
     describe('Without localStorage', () => {
