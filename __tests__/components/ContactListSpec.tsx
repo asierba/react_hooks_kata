@@ -44,6 +44,15 @@ describe('Contact list functionality', () => {
                 });
             });
         });
+
+        it.skip('Should disable the button if phone contact already exists', (done) => {
+            const contactList = [new Contact(anyPhone, anyName, false)];
+            localStorage.setItem('contacts', JSON.stringify(contactList));
+            render(<ContactList />);
+            fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: anyOtherName }});
+            fireEvent.change(screen.getByLabelText('Número'), { target: { value: anyPhone }});
+            expect(screen.getByRole('button')).toBeDisabled();
+        });
     });
 
     describe('Without localStorage', () => {
