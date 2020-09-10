@@ -25,6 +25,9 @@ export const ContactList = () => {
     },[contacts]);
 
 
+    const isContactAlready = () => !!contacts.find((contact) => contact.phone === inputPhone);
+    const isDisabled = isContactAlready();
+
     return (
         <>
             <Table bordered hover>
@@ -52,6 +55,7 @@ export const ContactList = () => {
             <label htmlFor="input-phone">Número</label>
             <input type="text" id="input-phone" onChange={(event: any) => setInputPhone(event.target.value) } />
             <button
+                disabled={isDisabled}
                 onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>Añade nuevo contacto</button>
         </>
     );

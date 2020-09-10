@@ -43,13 +43,13 @@ describe('Contact list functionality', () => {
             expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
         });
 
-        it.skip('Should disable the button if phone contact already exists', (done) => {
+        it('Should disable the button if phone contact already exists', () => {
             const contactList = [new Contact(anyPhone, anyName, false)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
             render(<ContactList />);
             userEvent.type(screen.getByLabelText('Nombre'), anyOtherName);
             userEvent.type(screen.getByLabelText('Número'), anyPhone);
-            expect(screen.getByRole('button')).toBeDisabled();
+            expect(screen.getByRole('button',{name:'Añade nuevo contacto'})).toBeDisabled();
         });
     });
 
