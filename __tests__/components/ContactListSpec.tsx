@@ -2,7 +2,7 @@ import {ContactList} from '../../src/components/ContactList';
 import * as React from 'react';
 import {Contact} from '../../models/Contact';
 import faker from 'faker';
-import {fireEvent, render, screen, within} from '@testing-library/react';
+import {render, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 describe('Contact list functionality', () => {
@@ -27,23 +27,20 @@ describe('Contact list functionality', () => {
             expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
         });
 
-        it('Should toggle contact as favorite', (done) => {
+        it('Should toggle contact as favorite', () => {
             const contactList = [new Contact(anyPhone, anyName, false)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
-            render(<ContactList />);
+            render(<ContactList/>);
 
             userEvent.click(screen.getAllByText('Fav')[0]);
-            setImmediate(() => {
-                expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
-                expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
 
-                userEvent.click(screen.getAllByText('Fav')[0]);
-                setImmediate(() => {
-                    expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
-                    expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
-                    done();
-                });
-            });
+            expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
+            expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
+
+            userEvent.click(screen.getAllByText('Fav')[0]);
+
+            expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
+            expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
         });
 
         it.skip('Should disable the button if phone contact already exists', (done) => {
@@ -62,20 +59,19 @@ describe('Contact list functionality', () => {
             expect(screen.getAllByRole('row')).toHaveLength(1);
         });
 
-        it('Should render a specific contact when button is pressed', (done) => {
+        it('Should render a specific contact when button is pressed', () => {
             render(<ContactList />);
             const name = faker.name.firstName();
             const phone = faker.phone.phoneNumber();
             userEvent.type(screen.getByLabelText('Nombre'), name);
             userEvent.type(screen.getByLabelText('Número'), phone);
+
             userEvent.click(screen.getByRole('button'));
-            setImmediate(() => {
-                expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name, isFavorite: false}]));
-                expect(screen.getAllByRole('row')).toHaveLength(2);
-                expect(within(screen.getAllByRole('row')[1]).getByRole('name').textContent).toBe(name);
-                expect(within(screen.getAllByRole('row')[1]).getByRole('phone').textContent).toBe(phone);
-                done();
-            });
+
+            expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name, isFavorite: false}]));
+            expect(screen.getAllByRole('row')).toHaveLength(2);
+            expect(within(screen.getAllByRole('row')[1]).getByRole('name').textContent).toBe(name);
+            expect(within(screen.getAllByRole('row')[1]).getByRole('phone').textContent).toBe(phone);
         });
     });
 });
