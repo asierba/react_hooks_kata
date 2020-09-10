@@ -3,6 +3,7 @@ import * as React from 'react';
 import {Contact} from '../../models/Contact';
 import faker from 'faker';
 import {fireEvent, render, screen, within} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 describe('Contact list functionality', () => {
     beforeEach(() => {
@@ -31,12 +32,12 @@ describe('Contact list functionality', () => {
             localStorage.setItem('contacts', JSON.stringify(contactList));
             render(<ContactList />);
 
-            fireEvent.click(screen.getAllByText('Fav')[0]);
+            userEvent.click(screen.getAllByText('Fav')[0]);
             setImmediate(() => {
                 expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
                 expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
 
-                fireEvent.click(screen.getAllByText('Fav')[0]);
+                userEvent.click(screen.getAllByText('Fav')[0]);
                 setImmediate(() => {
                     expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
                     expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
@@ -49,8 +50,8 @@ describe('Contact list functionality', () => {
             const contactList = [new Contact(anyPhone, anyName, false)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
             render(<ContactList />);
-            fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: anyOtherName }});
-            fireEvent.change(screen.getByLabelText('Número'), { target: { value: anyPhone }});
+            userEvent.type(screen.getByLabelText('Nombre'), anyOtherName);
+            userEvent.type(screen.getByLabelText('Número'), anyPhone);
             expect(screen.getByRole('button')).toBeDisabled();
         });
     });
@@ -65,9 +66,9 @@ describe('Contact list functionality', () => {
             render(<ContactList />);
             const name = faker.name.firstName();
             const phone = faker.phone.phoneNumber();
-            fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: name }});
-            fireEvent.change(screen.getByLabelText('Número'), { target: { value: phone }});
-            fireEvent.click(screen.getByRole('button'));
+            userEvent.type(screen.getByLabelText('Nombre'), name);
+            userEvent.type(screen.getByLabelText('Número'), phone);
+            userEvent.click(screen.getByRole('button'));
             setImmediate(() => {
                 expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name, isFavorite: false}]));
                 expect(screen.getAllByRole('row')).toHaveLength(2);
