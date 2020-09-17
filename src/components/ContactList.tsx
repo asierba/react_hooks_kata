@@ -60,7 +60,7 @@ export const ContactList = () => {
             <label htmlFor="input-name">Nombre</label>
             <input type="text" id="input-name" onChange={(event: any) => setInputName(event.target.value)} />
             <label htmlFor="input-phone">Número</label>
-            <input type="text" id="input-phone" onChange={(event: any) => setInputPhone(event.target.value)} />
+            <input type="text" id="input-phone" onChange={(event: any) => setInputPhone(event.target.value)} pattern="[0-9]{9}" />
             <button disabled={isDisabled} onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>
                 Añade nuevo contacto
             </button>
