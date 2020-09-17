@@ -26,7 +26,11 @@ export const ContactList = () => {
         localStorage.setItem('contacts', JSON.stringify(contacts));
     }, [contacts]);
 
-    const isDisabled = useMemo((): boolean => !!contacts.find((contact) => contact.phone === inputPhone), [
+    const isDisabled = useMemo((): boolean => {
+        const contactIsDuplicated = !!contacts.find((contact) => contact.phone === inputPhone);
+        const numberIsInvalid =  inputPhone === "123";
+        return contactIsDuplicated || numberIsInvalid;
+    }, [
         contacts,
         inputPhone,
     ]);

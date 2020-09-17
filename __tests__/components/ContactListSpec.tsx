@@ -51,6 +51,17 @@ describe('Contact list functionality', () => {
             userEvent.type(screen.getByLabelText('Número'), anyPhone);
             expect(screen.getByRole('button',{name:'Añade nuevo contacto'})).toBeDisabled();
         });
+
+        it.each
+            `phone      | expected
+            ${"123"}    |  ${true}
+        `
+        ('Should disable the button if phone number is invalid', ({phone, expected}) => {
+            render(<ContactList />);
+            userEvent.type(screen.getByLabelText('Nombre'), 'Juan');
+            userEvent.type(screen.getByLabelText('Número'), phone);
+            expect(screen.getByRole('button',{name:'Añade nuevo contacto'}).disabled).toBe(expected);
+        });
     });
 
     describe('Without localStorage', () => {
