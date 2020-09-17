@@ -1,8 +1,8 @@
-import {ContactList} from '../../src/components/ContactList';
+import { ContactList } from '../../src/components/ContactList';
 import * as React from 'react';
-import {Contact} from '../../models/Contact';
+import { Contact } from '../../models/Contact';
 import faker from 'faker';
-import {render, screen, within} from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 describe('Contact list functionality', () => {
@@ -30,7 +30,7 @@ describe('Contact list functionality', () => {
         it('Should toggle contact as favorite', () => {
             const contactList = [new Contact(anyPhone, anyName, false)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
-            render(<ContactList/>);
+            render(<ContactList />);
 
             userEvent.click(screen.getAllByText('Fav')[0]);
 
@@ -49,18 +49,29 @@ describe('Contact list functionality', () => {
             render(<ContactList />);
             userEvent.type(screen.getByLabelText('Nombre'), anyOtherName);
             userEvent.type(screen.getByLabelText('Número'), anyPhone);
-            expect(screen.getByRole('button',{name:'Añade nuevo contacto'})).toBeDisabled();
+            expect(screen.getByRole('button', { name: 'Añade nuevo contacto' })).toBeDisabled();
         });
 
-        it.each
-            `phone      | expected
-            ${"123"}    |  ${true}
-        `
-        ('Should disable the button if phone number is invalid', ({phone, expected}) => {
+        it.each`
+            phone           | expected
+            ${'123'}        | ${true}
+            ${'aaaaa'}      | ${true}
+            ${'123456789'}  | ${false}
+            ${'1234567890'} | ${true}
+            ${'12345678'}   | ${true}
+            ${'a123456789'} | ${true}
+            ${'123456789a'} | ${true}
+            ${undefined}    | ${true}
+            ${null}         | ${true}
+            ${false}        | ${true}
+            ${''}           | ${true}
+        `('Should set the button disabled as $expected if phone number is $phone', ({ phone, expected }) => {
             render(<ContactList />);
             userEvent.type(screen.getByLabelText('Nombre'), 'Juan');
             userEvent.type(screen.getByLabelText('Número'), phone);
-            expect(screen.getByRole('button',{name:'Añade nuevo contacto'}).disabled).toBe(expected);
+            expect((screen.getByRole('button', { name: 'Añade nuevo contacto' }) as HTMLButtonElement).disabled).toBe(
+                expected
+            );
         });
     });
 
@@ -73,13 +84,13 @@ describe('Contact list functionality', () => {
         it('Should render a specific contact when button is pressed', () => {
             render(<ContactList />);
             const name = faker.name.firstName();
-            const phone = faker.phone.phoneNumber();
+            const phone = faker.phone.phoneNumber('#########');
             userEvent.type(screen.getByLabelText('Nombre'), name);
             userEvent.type(screen.getByLabelText('Número'), phone);
 
             userEvent.click(screen.getByRole('button'));
 
-            expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{phone, name, isFavorite: false}]));
+            expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{ phone, name, isFavorite: false }]));
             expect(screen.getAllByRole('row')).toHaveLength(2);
             expect(within(screen.getAllByRole('row')[1]).getByRole('name').textContent).toBe(name);
             expect(within(screen.getAllByRole('row')[1]).getByRole('phone').textContent).toBe(phone);

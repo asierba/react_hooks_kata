@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Contact } from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
 
+const REGEXP_STR = '^[0-9]{9}$';
+
 function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
     const allContacts = contacts.concat(new Contact(inputPhone, inputName));
     localStorage.setItem('contacts', JSON.stringify(allContacts));
@@ -28,12 +30,9 @@ export const ContactList = () => {
 
     const isDisabled = useMemo((): boolean => {
         const contactIsDuplicated = !!contacts.find((contact) => contact.phone === inputPhone);
-        const numberIsInvalid =  inputPhone === "123";
+        const numberIsInvalid = !new RegExp(REGEXP_STR).test(inputPhone);
         return contactIsDuplicated || numberIsInvalid;
-    }, [
-        contacts,
-        inputPhone,
-    ]);
+    }, [contacts, inputPhone]);
 
     return (
         <>
@@ -64,7 +63,12 @@ export const ContactList = () => {
             <label htmlFor="input-name">Nombre</label>
             <input type="text" id="input-name" onChange={(event: any) => setInputName(event.target.value)} />
             <label htmlFor="input-phone">Número</label>
-            <input type="text" id="input-phone" onChange={(event: any) => setInputPhone(event.target.value)} pattern="[0-9]{9}" />
+            <input
+                type="text"
+                id="input-phone"
+                onChange={(event: any) => setInputPhone(event.target.value)}
+                pattern={REGEXP_STR}
+            />
             <button disabled={isDisabled} onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>
                 Añade nuevo contacto
             </button>
