@@ -24,10 +24,17 @@ function useInputPhone (contacts: Contact[]) : [string, (event: React.ChangeEven
     return [inputPhone, onChangePhone, isDisabled];
 }
 
+function useChuckNorris(): [string, (event: React.MouseEvent<HTMLButtonElement>) => void] {
+    const [joke, setJoke] = useState<string>('');
+    const onClick = useCallback((event: React.MouseEvent<HTMLButtonElement>)  => setJoke('Van dos y Chuck Norris mata a 3!'), []);
+    return [joke, onClick];
+}
+
 export const ContactList = () => {
     const [contacts, setContacts] = useState<Contact[]>(JSON.parse(localStorage.getItem('contacts') || '[]'));
     const [inputName, setInputName] = useState('');
     const [inputPhone, onChangePhone, isDisabled] = useInputPhone(contacts);
+    const [joke, getJoke] = useChuckNorris();
 
     const setAsFav = useCallback(
         (favContact: Contact) => {
@@ -80,6 +87,10 @@ export const ContactList = () => {
             <button disabled={isDisabled} onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>
                 Añade nuevo contacto
             </button>
+            <br/>
+            <button onClick={getJoke} >Chucknorrisame!</button>
+            <div>{joke}</div>
+
         </>
     );
 };

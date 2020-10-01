@@ -88,12 +88,22 @@ describe('Contact list functionality', () => {
             userEvent.type(screen.getByLabelText('Nombre'), name);
             userEvent.type(screen.getByLabelText('Número'), phone);
 
-            userEvent.click(screen.getByRole('button'));
+            userEvent.click(screen.getByRole('button', {name: 'Añade nuevo contacto'}));
 
             expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{ phone, name, isFavorite: false }]));
             expect(screen.getAllByRole('row')).toHaveLength(2);
             expect(within(screen.getAllByRole('row')[1]).getByRole('name').textContent).toBe(name);
             expect(within(screen.getAllByRole('row')[1]).getByRole('phone').textContent).toBe(phone);
+        });
+    });
+
+    describe('Chuck Norris jokes', () => {
+        it('should show a random Chuck norris Joke when click button', () => {
+            render(<ContactList />);
+
+            userEvent.click(screen.getByRole('button', {name: 'Chucknorrisame!'}))
+
+            expect(screen.getByText('Van dos y Chuck Norris mata a 3!')).toBeInTheDocument();
         });
     });
 });
