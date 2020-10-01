@@ -10,11 +10,24 @@ function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
     localStorage.setItem('contacts', JSON.stringify(allContacts));
     return allContacts;
 }
+function useInputPhone (contacts: Contact[]) : [string, (event: React.ChangeEvent<HTMLInputElement>) => void, boolean ] {
+    const [inputPhone, setInputPhone] = useState('');
+
+    const isDisabled = useMemo((): boolean => {
+        const contactIsDuplicated = !!contacts.find((contact) => contact.phone === inputPhone);
+        const numberIsInvalid = !new RegExp(REGEXP_STR).test(inputPhone);
+        return contactIsDuplicated || numberIsInvalid;
+    }, [contacts, inputPhone]);
+
+    const onChangePhone = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setInputPhone(event.target.value), []) ;
+
+    return [inputPhone, onChangePhone, isDisabled];
+}
 
 export const ContactList = () => {
     const [contacts, setContacts] = useState<Contact[]>(JSON.parse(localStorage.getItem('contacts') || '[]'));
     const [inputName, setInputName] = useState('');
-    const [inputPhone, setInputPhone] = useState('');
+    const [inputPhone, onChangePhone, isDisabled] = useInputPhone(contacts);
 
     const setAsFav = useCallback(
         (favContact: Contact) => {
@@ -28,11 +41,6 @@ export const ContactList = () => {
         localStorage.setItem('contacts', JSON.stringify(contacts));
     }, [contacts]);
 
-    const isDisabled = useMemo((): boolean => {
-        const contactIsDuplicated = !!contacts.find((contact) => contact.phone === inputPhone);
-        const numberIsInvalid = !new RegExp(REGEXP_STR).test(inputPhone);
-        return contactIsDuplicated || numberIsInvalid;
-    }, [contacts, inputPhone]);
 
     return (
         <>
@@ -66,7 +74,7 @@ export const ContactList = () => {
             <input
                 type="text"
                 id="input-phone"
-                onChange={(event: any) => setInputPhone(event.target.value)}
+                onChange={onChangePhone}
                 pattern={REGEXP_STR}
             />
             <button disabled={isDisabled} onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>
