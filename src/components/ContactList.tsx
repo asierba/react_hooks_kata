@@ -26,7 +26,13 @@ function useInputPhone (contacts: Contact[]) : [string, (event: React.ChangeEven
 
 function useChuckNorris(): [string, (event: React.MouseEvent<HTMLButtonElement>) => void] {
     const [joke, setJoke] = useState<string>('');
-    const onClick = useCallback((event: React.MouseEvent<HTMLButtonElement>)  => setJoke('Van dos y Chuck Norris mata a 3!'), []);
+    const onClick = useCallback((event: React.MouseEvent<HTMLButtonElement>)  => {
+        fetch('https://api.chucknorris.io/jokes/random')
+            .then(response => response.json())
+            .then(data => {
+                setJoke(data.value);
+            });
+    }, []);
     return [joke, onClick];
 }
 

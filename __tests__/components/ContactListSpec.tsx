@@ -4,6 +4,7 @@ import { Contact } from '../../models/Contact';
 import faker from 'faker';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import fetchMock from 'jest-fetch-mock';
 
 describe('Contact list functionality', () => {
     beforeEach(() => {
@@ -98,12 +99,27 @@ describe('Contact list functionality', () => {
     });
 
     describe('Chuck Norris jokes', () => {
-        it('should show a random Chuck norris Joke when click button', () => {
+        it('should show a random Chuck norris Joke when click button', async () => {
+            const joke = 'Van dos y Chuck Norris mata a 4!';
+            const response = {
+                "value": joke
+            };
+
+            // TODO check url in test
+            // fetchMock.mockIf('https://api.chucknorris.io/jokes/random',() => {
+            //     return Promise.resolve({
+            //         body: response
+            //     });
+            // });
+
+            fetchMock.mockResponseOnce(JSON.stringify(response));
+
+
             render(<ContactList />);
 
             userEvent.click(screen.getByRole('button', {name: 'Chucknorrisame!'}))
 
-            expect(screen.getByText('Van dos y Chuck Norris mata a 3!')).toBeInTheDocument();
+            expect(await screen.findByText(joke)).toBeInTheDocument();
         });
     });
 });

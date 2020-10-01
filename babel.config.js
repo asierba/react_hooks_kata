@@ -5,7 +5,6 @@ module.exports = {
             corejs: 'core-js@3',
             targets: {
                 node: 'current',
-                ie: '10',
             },
         }],
         ['@babel/preset-react', { flow: false, typescript: true }],
