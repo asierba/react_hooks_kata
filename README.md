@@ -23,10 +23,10 @@ Keep in mind that you should do these features sequentially.
 ```jest```
 
 ### Current State
-[X] Fav is not being toggled
-[X] Validation for repeated numbers
-[] Create our own hook for input phone 
-[] Call backend service (chuck norris joke (https://api.chucknorris.io/jokes/random)??)  
-[] Use Styled components (https://styled-components.com/) / emotion (https://github.com/emotion-js/emotion)  
+* [X] Fav is not being toggled
+* [X] Validation for repeated numbers
+* [ ] Create our own hook for input phone 
+* [ ] Call backend service (chuck norris joke (https://api.chucknorris.io/jokes/random)??)  
+* [ ] Use Styled components (https://styled-components.com/) / emotion (https://github.com/emotion-js/emotion)  
 
 ### Thanks for helping me :-)
