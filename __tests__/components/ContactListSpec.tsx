@@ -105,15 +105,7 @@ describe('Contact list functionality', () => {
                 "value": joke
             };
 
-            // TODO check url in test
-            // fetchMock.mockIf('https://api.chucknorris.io/jokes/random',() => {
-            //     return Promise.resolve({
-            //         body: response
-            //     });
-            // });
-
-            fetchMock.mockResponseOnce(JSON.stringify(response));
-
+            fetchMock.mockIf('https://api.chucknorris.io/jokes/random', JSON.stringify(response));
 
             render(<ContactList />);
 
