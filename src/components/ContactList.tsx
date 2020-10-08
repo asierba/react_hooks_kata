@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Contact } from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
+import {ButtonChuckNorris} from './ContactList-Styles'
 
 const REGEXP_STR = '^[0-9]{9}$';
 
@@ -94,9 +95,8 @@ export const ContactList = () => {
                 Añade nuevo contacto
             </button>
             <br/>
-            <button onClick={getJoke} >Chucknorrisame!</button>
+            <ButtonChuckNorris width={500} onClick={getJoke} >Chucknorrisame!</ButtonChuckNorris>
             <div>{joke}</div>
-
         </>
     );
 };

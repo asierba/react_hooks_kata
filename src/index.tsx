@@ -9,7 +9,7 @@ export interface IState {
 }
 
 const Index = () => {
-    return <App />;
+    return  <App />;
 };
 
 ReactDOM.render(<Index />, document.getElementById('root'));
