@@ -74,7 +74,7 @@ export const ContactList = () => {
                                 <td role="name">{contact.name}</td>
                                 <td role="phone">{contact.phone}</td>
                                 <td>
-                                    <IconButton aria-label="Fav" onClick={() => setAsFav(contact)}>
+                                    <IconButton aria-label="Fav" onClick={() => setAsFav(contact)} color={ contact.isFavorite ? 'primary' : 'default'}>
                                         <StarIcon />
                                     </IconButton>
                                 </td>
