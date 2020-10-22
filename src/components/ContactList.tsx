@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Contact } from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
+import { Button, IconButton } from '@material-ui/core';
+import StarIcon from '@material-ui/icons/Star';
 
 const REGEXP_STR = '^[0-9]{9}$';
 
@@ -72,9 +74,9 @@ export const ContactList = () => {
                                 <td role="name">{contact.name}</td>
                                 <td role="phone">{contact.phone}</td>
                                 <td>
-                                    <button data-id="fav" onClick={() => setAsFav(contact)}>
-                                        Fav
-                                    </button>
+                                    <IconButton aria-label="Fav" onClick={() => setAsFav(contact)}>
+                                        <StarIcon />
+                                    </IconButton>
                                 </td>
                             </tr>
                         );
@@ -90,13 +92,12 @@ export const ContactList = () => {
                 onChange={onChangePhone}
                 pattern={REGEXP_STR}
             />
-            <button disabled={isDisabled} onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>
+            <Button variant="contained" disabled={isDisabled} onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>
                 Añade nuevo contacto
-            </button>
+            </Button>
             <br/>
-            <button onClick={getJoke} >Chucknorrisame!</button>
+            <Button variant="contained" color="primary" onClick={getJoke} >Chucknorrisame!</Button>
             <div>{joke}</div>
-
         </>
     );
 };

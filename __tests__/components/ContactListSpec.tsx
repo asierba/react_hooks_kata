@@ -33,12 +33,12 @@ describe('Contact list functionality', () => {
             localStorage.setItem('contacts', JSON.stringify(contactList));
             render(<ContactList />);
 
-            userEvent.click(screen.getAllByText('Fav')[0]);
+            userEvent.click(screen.getAllByRole('button', { name: 'Fav'})[0]);
 
             expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
             expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
 
-            userEvent.click(screen.getAllByText('Fav')[0]);
+            userEvent.click(screen.getAllByRole('button', { name: 'Fav'})[0]);
 
             expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
             expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
