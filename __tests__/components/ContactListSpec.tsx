@@ -35,12 +35,12 @@ describe('Contact list functionality', () => {
 
             userEvent.click(screen.getAllByRole('button', { name: 'Fav'})[0]);
 
-            expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(true);
+            expect(JSON.parse(localStorage.getItem('contacts') || '')[0].isFavorite).toBe(true);
             expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
 
             userEvent.click(screen.getAllByRole('button', { name: 'Fav'})[0]);
 
-            expect(JSON.parse(localStorage.getItem('contacts'))[0].isFavorite).toBe(false);
+            expect(JSON.parse(localStorage.getItem('contacts') || '')[0].isFavorite).toBe(false);
             expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
         });
 
@@ -89,7 +89,7 @@ describe('Contact list functionality', () => {
             userEvent.type(screen.getByLabelText('Nombre'), name);
             userEvent.type(screen.getByLabelText('Número'), phone);
 
-            userEvent.click(screen.getByRole('button', {name: 'Añade nuevo contacto'}));
+            userEvent.click(screen.getByRole('button', { name: 'Añade nuevo contacto' }));
 
             expect(localStorage.getItem('contacts')).toBe(JSON.stringify([{ phone, name, isFavorite: false }]));
             expect(screen.getAllByRole('row')).toHaveLength(2);
@@ -102,14 +102,14 @@ describe('Contact list functionality', () => {
         it('should show a random Chuck norris Joke when click button', async () => {
             const joke = 'Van dos y Chuck Norris mata a 4!';
             const response = {
-                "value": joke
+                value: joke,
             };
 
             fetchMock.mockIf('https://api.chucknorris.io/jokes/random', JSON.stringify(response));
 
             render(<ContactList />);
 
-            userEvent.click(screen.getByRole('button', {name: 'Chucknorrisame!'}))
+            userEvent.click(screen.getByRole('button', { name: 'Chucknorrisame!' }));
 
             expect(await screen.findByText(joke)).toBeInTheDocument();
         });

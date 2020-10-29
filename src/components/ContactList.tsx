@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { Contact } from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
@@ -12,7 +12,7 @@ function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
     localStorage.setItem('contacts', JSON.stringify(allContacts));
     return allContacts;
 }
-function useInputPhone (contacts: Contact[]) : [string, (event: React.ChangeEvent<HTMLInputElement>) => void, boolean ] {
+function useInputPhone(contacts: Contact[]): [string, (event: React.ChangeEvent<HTMLInputElement>) => void, boolean] {
     const [inputPhone, setInputPhone] = useState('');
 
     const isDisabled = useMemo((): boolean => {
@@ -21,17 +21,20 @@ function useInputPhone (contacts: Contact[]) : [string, (event: React.ChangeEven
         return contactIsDuplicated || numberIsInvalid;
     }, [contacts, inputPhone]);
 
-    const onChangePhone = useCallback((event: React.ChangeEvent<HTMLInputElement>) => setInputPhone(event.target.value), []) ;
+    const onChangePhone = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => setInputPhone(event.target.value),
+        []
+    );
 
     return [inputPhone, onChangePhone, isDisabled];
 }
 
 function useChuckNorris(): [string, (event: React.MouseEvent<HTMLButtonElement>) => void] {
     const [joke, setJoke] = useState<string>('');
-    const onClick = useCallback((event: React.MouseEvent<HTMLButtonElement>)  => {
+    const onClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         fetch('https://api.chucknorris.io/jokes/random')
-            .then(response => response.json())
-            .then(data => {
+            .then((response) => response.json())
+            .then((data) => {
                 setJoke(data.value);
             });
     }, []);
@@ -56,7 +59,6 @@ export const ContactList = () => {
         localStorage.setItem('contacts', JSON.stringify(contacts));
     }, [contacts]);
 
-
     return (
         <>
             <Table bordered hover>
@@ -74,7 +76,11 @@ export const ContactList = () => {
                                 <td role="name">{contact.name}</td>
                                 <td role="phone">{contact.phone}</td>
                                 <td>
-                                    <IconButton aria-label="Fav" onClick={() => setAsFav(contact)} color={ contact.isFavorite ? 'primary' : 'default'}>
+                                    <IconButton
+                                        aria-label="Fav"
+                                        onClick={() => setAsFav(contact)}
+                                        color={contact.isFavorite ? 'primary' : 'default'}
+                                    >
                                         <StarIcon />
                                     </IconButton>
                                 </td>
@@ -86,17 +92,18 @@ export const ContactList = () => {
             <label htmlFor="input-name">Nombre</label>
             <input type="text" id="input-name" onChange={(event: any) => setInputName(event.target.value)} />
             <label htmlFor="input-phone">Número</label>
-            <input
-                type="text"
-                id="input-phone"
-                onChange={onChangePhone}
-                pattern={REGEXP_STR}
-            />
-            <Button variant="contained" disabled={isDisabled} onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}>
+            <input type="text" id="input-phone" onChange={onChangePhone} pattern={REGEXP_STR} />
+            <Button
+                variant="contained"
+                disabled={isDisabled}
+                onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}
+            >
                 Añade nuevo contacto
             </Button>
-            <br/>
-            <Button variant="contained" color="primary" onClick={getJoke} >Chucknorrisame!</Button>
+            <br />
+            <Button variant="contained" color="primary" onClick={getJoke}>
+                Chucknorrisame!
+            </Button>
             <div>{joke}</div>
         </>
     );
