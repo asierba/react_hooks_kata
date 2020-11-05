@@ -6,13 +6,15 @@ export interface State {
     contacts: Contact[];
 }
 
-const initialState: State = {
-    contacts: [],
-};
+
 
 const LOCAL_STORAGE_KEY = 'contacts';
 
-function reducer(state: State = initialState, action: ContactActions) {
+export function reducer(state: State, action: ContactActions) {
+    const initialState: State = {
+        contacts: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]'),
+    };
+    state = state ||  initialState;
     switch (action.type) {
         case ContactActionTypes.ADD: {
             const newContacts = state.contacts.concat(action.payload);
@@ -28,11 +30,7 @@ function reducer(state: State = initialState, action: ContactActions) {
                 contacts: newContacts,
             };
         }
-        case ContactActionTypes.LOAD:
-            return { contacts: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]') };
         default:
             return state;
     }
 }
-
-export default createStore(reducer);

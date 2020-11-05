@@ -6,9 +6,11 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
 import { Provider } from 'react-redux';
-import store from '../../src/store/State';
+import { reducer } from '../../src/store/State';
+import { createStore } from 'redux';
 
 function renderContactList() {
+    const store = createStore(reducer);
     render(
         <Provider store={store}>
             <ContactList />

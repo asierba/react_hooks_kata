@@ -2,12 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/app';
 import 'bootstrap/dist/css/bootstrap.css';
-import { Contact } from '../models/Contact';
 import { Provider } from 'react-redux';
 
-import store from './store/State';
+import { reducer } from './store/State';
+import { createStore } from 'redux';
 
 const Index = () => {
+    const store = createStore(reducer);
     return (
         <Provider store={store}>
             <App />

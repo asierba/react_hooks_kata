@@ -45,10 +45,10 @@ export const ContactList = () => {
     const [inputName, setInputName] = useState('');
     const [inputPhone, onChangePhone, isDisabled] = useInputPhone(contacts);
     const [joke, getJoke] = useChuckNorris();
-
-    useEffect(() => {
-        dispatch(contact.load());
-    }, [dispatch]);
+    //
+    // useEffect(() => {
+    //     dispatch(contact.load());
+    // }, [dispatch]);
 
     const setAsFav = useCallback(
         (favContact: Contact) => {
