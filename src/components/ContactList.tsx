@@ -4,14 +4,12 @@ import { Contact } from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
 import { Button, IconButton } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
+import * as contact from '../store/actions';
+import * as fromContacts from '../store/selectors';
+import { useDispatch, useSelector } from 'react-redux';
 
 const REGEXP_STR = '^[0-9]{9}$';
 
-function addToList(contacts: Contact[], inputPhone: string, inputName: string) {
-    const allContacts = contacts.concat(new Contact(inputPhone, inputName));
-    localStorage.setItem('contacts', JSON.stringify(allContacts));
-    return allContacts;
-}
 function useInputPhone(contacts: Contact[]): [string, (event: React.ChangeEvent<HTMLInputElement>) => void, boolean] {
     const [inputPhone, setInputPhone] = useState('');
 
@@ -42,22 +40,23 @@ function useChuckNorris(): [string, (event: React.MouseEvent<HTMLButtonElement>)
 }
 
 export const ContactList = () => {
-    const [contacts, setContacts] = useState<Contact[]>(JSON.parse(localStorage.getItem('contacts') || '[]'));
+    const contacts = useSelector(fromContacts.contactList);
+    const dispatch = useDispatch();
     const [inputName, setInputName] = useState('');
     const [inputPhone, onChangePhone, isDisabled] = useInputPhone(contacts);
     const [joke, getJoke] = useChuckNorris();
 
+    useEffect(() => {
+        dispatch(contact.load());
+    }, [dispatch]);
+
     const setAsFav = useCallback(
         (favContact: Contact) => {
             favContact.isFavorite = !favContact.isFavorite;
-            setContacts(contacts.map((contact) => (contact.phone === favContact.phone ? favContact : contact)));
+            dispatch(contact.update(favContact));
         },
         [contacts]
     );
-
-    useEffect(() => {
-        localStorage.setItem('contacts', JSON.stringify(contacts));
-    }, [contacts]);
 
     return (
         <>
@@ -96,7 +95,7 @@ export const ContactList = () => {
             <Button
                 variant="contained"
                 disabled={isDisabled}
-                onClick={() => setContacts(addToList(contacts, inputPhone, inputName))}
+                onClick={() => dispatch(contact.add(new Contact(inputPhone, inputName)))}
             >
                 Añade nuevo contacto
             </Button>

@@ -5,6 +5,16 @@ import faker from 'faker';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
+import { Provider } from 'react-redux';
+import store from '../../src/store/State';
+
+function renderContactList() {
+    render(
+        <Provider store={store}>
+            <ContactList />
+        </Provider>
+    );
+}
 
 describe('Contact list functionality', () => {
     beforeEach(() => {
@@ -20,7 +30,7 @@ describe('Contact list functionality', () => {
         it('Should load contacts from localstorage', () => {
             const contactList = [new Contact(anyPhone, anyName, false), new Contact(anyOtherPhone, anyOtherName, true)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
-            render(<ContactList />);
+            renderContactList();
 
             expect(screen.getAllByRole('row')).toHaveLength(contactList.length + 1);
             expect(screen.getByText(anyName)).toBeInTheDocument();
@@ -31,14 +41,14 @@ describe('Contact list functionality', () => {
         it('Should toggle contact as favorite', () => {
             const contactList = [new Contact(anyPhone, anyName, false)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
-            render(<ContactList />);
+            renderContactList();
 
-            userEvent.click(screen.getAllByRole('button', { name: 'Fav'})[0]);
+            userEvent.click(screen.getAllByRole('button', { name: 'Fav' })[0]);
 
             expect(JSON.parse(localStorage.getItem('contacts') || '')[0].isFavorite).toBe(true);
             expect(screen.getAllByRole('row')[1]).toHaveClass('favorite');
 
-            userEvent.click(screen.getAllByRole('button', { name: 'Fav'})[0]);
+            userEvent.click(screen.getAllByRole('button', { name: 'Fav' })[0]);
 
             expect(JSON.parse(localStorage.getItem('contacts') || '')[0].isFavorite).toBe(false);
             expect(screen.getAllByRole('row')[1]).not.toHaveClass('favorite');
@@ -47,7 +57,7 @@ describe('Contact list functionality', () => {
         it('Should disable the button if phone contact already exists', () => {
             const contactList = [new Contact(anyPhone, anyName, false)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
-            render(<ContactList />);
+            renderContactList();
             userEvent.type(screen.getByLabelText('Nombre'), anyOtherName);
             userEvent.type(screen.getByLabelText('Número'), anyPhone);
             expect(screen.getByRole('button', { name: 'Añade nuevo contacto' })).toBeDisabled();
@@ -67,7 +77,7 @@ describe('Contact list functionality', () => {
             ${false}        | ${true}
             ${''}           | ${true}
         `('Should set the button disabled as $expected if phone number is $phone', ({ phone, expected }) => {
-            render(<ContactList />);
+            renderContactList();
             userEvent.type(screen.getByLabelText('Nombre'), 'Juan');
             userEvent.type(screen.getByLabelText('Número'), phone);
             expect((screen.getByRole('button', { name: 'Añade nuevo contacto' }) as HTMLButtonElement).disabled).toBe(
@@ -78,12 +88,12 @@ describe('Contact list functionality', () => {
 
     describe('Without localStorage', () => {
         it('Should render no contacts in initial state', () => {
-            render(<ContactList />);
+            renderContactList();
             expect(screen.getAllByRole('row')).toHaveLength(1);
         });
 
         it('Should render a specific contact when button is pressed', () => {
-            render(<ContactList />);
+            renderContactList();
             const name = faker.name.firstName();
             const phone = faker.phone.phoneNumber('#########');
             userEvent.type(screen.getByLabelText('Nombre'), name);
@@ -107,7 +117,7 @@ describe('Contact list functionality', () => {
 
             fetchMock.mockIf('https://api.chucknorris.io/jokes/random', JSON.stringify(response));
 
-            render(<ContactList />);
+            renderContactList();
 
             userEvent.click(screen.getByRole('button', { name: 'Chucknorrisame!' }));
 
