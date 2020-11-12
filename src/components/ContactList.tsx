@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { Contact } from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
 import { Button, IconButton } from '@material-ui/core';
@@ -45,10 +45,6 @@ export const ContactList = () => {
     const [inputName, setInputName] = useState('');
     const [inputPhone, onChangePhone, isDisabled] = useInputPhone(contacts);
     const [joke, getJoke] = useChuckNorris();
-    //
-    // useEffect(() => {
-    //     dispatch(contact.load());
-    // }, [dispatch]);
 
     const setAsFav = useCallback(
         (favContact: Contact) => {

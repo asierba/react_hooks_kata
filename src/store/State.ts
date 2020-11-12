@@ -1,12 +1,9 @@
 import { Contact } from '../../models/Contact';
-import { createStore } from 'redux';
 import { ContactActionTypes, ContactActions } from './actions';
 
 export interface State {
     contacts: Contact[];
 }
-
-
 
 const LOCAL_STORAGE_KEY = 'contacts';
 
