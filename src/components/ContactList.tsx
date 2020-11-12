@@ -84,21 +84,26 @@ export const ContactList = () => {
                     })}
                 </tbody>
             </Table>
-            <label htmlFor="input-name">Nombre</label>
-            <input type="text" id="input-name" onChange={(event: any) => setInputName(event.target.value)} />
-            <label htmlFor="input-phone">Número</label>
-            <input type="text" id="input-phone" onChange={onChangePhone} pattern={REGEXP_STR} />
-            <Button
-                variant="contained"
-                disabled={isDisabled}
-                onClick={() => dispatch(contact.add(new Contact(inputPhone, inputName)))}
-            >
-                Añade nuevo contacto
-            </Button>
+            <form onSubmit={() => dispatch(contact.add(new Contact(inputPhone, inputName)))}>
+                <label htmlFor="input-name">Nombre</label>
+                <input type="text" id="input-name" onChange={(event: any) => setInputName(event.target.value)} />
+                <label htmlFor="input-phone">Número</label>
+                <input type="text" id="input-phone" onChange={onChangePhone} pattern={REGEXP_STR} />
+
+                <Button
+                    variant="contained"
+                    disabled={isDisabled}
+                    type="submit"
+                >
+                    Añade nuevo contacto
+                </Button>
+            </form>
             <br />
+
             <Button variant="contained" color="primary" onClick={getJoke}>
                 Chucknorrisame!
             </Button>
+
             <div>{joke}</div>
         </>
     );
