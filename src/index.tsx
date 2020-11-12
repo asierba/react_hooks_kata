@@ -4,11 +4,11 @@ import App from './components/app';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Provider } from 'react-redux';
 
-import { reducer } from './store/State';
-import { createStore } from 'redux';
+import { syncContactsWithStorageMiddleware, reducer } from './store/State';
+import { applyMiddleware, createStore } from 'redux';
 
 const Index = () => {
-    const store = createStore(reducer);
+    const store = createStore(reducer, applyMiddleware(syncContactsWithStorageMiddleware));
     return (
         <Provider store={store}>
             <App />

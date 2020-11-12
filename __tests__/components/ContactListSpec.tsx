@@ -6,11 +6,11 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
 import { Provider } from 'react-redux';
-import { reducer } from '../../src/store/State';
-import { createStore } from 'redux';
+import { reducer, syncContactsWithStorageMiddleware } from '../../src/store/State';
+import { applyMiddleware, createStore } from 'redux';
 
 function renderContactList() {
-    const store = createStore(reducer);
+    const store = createStore(reducer, applyMiddleware(syncContactsWithStorageMiddleware));
     render(
         <Provider store={store}>
             <ContactList />

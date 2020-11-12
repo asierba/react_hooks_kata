@@ -1,5 +1,5 @@
 import { Contact } from '../../models/Contact';
-import { ContactActionTypes, ContactActions } from './actions';
+import { ContactActions, ContactActionTypes } from './actions';
 
 export interface State {
     contacts: Contact[];
@@ -15,14 +15,14 @@ export function reducer(state: State, action: ContactActions) {
     switch (action.type) {
         case ContactActionTypes.ADD: {
             const newContacts = state.contacts.concat(action.payload);
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newContacts));
-            return { contacts: newContacts };
+            return {
+                contacts: newContacts
+            };
         }
         case ContactActionTypes.UPDATE: {
             const newContacts = state.contacts.map((contact) =>
                 contact.phone === action.payload.phone ? action.payload : contact
             );
-            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newContacts));
             return {
                 contacts: newContacts,
             };
@@ -30,4 +30,11 @@ export function reducer(state: State, action: ContactActions) {
         default:
             return state;
     }
+}
+
+export const syncContactsWithStorageMiddleware = (storeAPI:any) => (next:any) => (action:any) => {
+    const result = next(action);
+    const state : State = storeAPI.getState();
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(state.contacts));
+    return result;
 }
