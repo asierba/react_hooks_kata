@@ -2,7 +2,7 @@ import { ContactList } from '../../src/components/ContactList';
 import * as React from 'react';
 import { Contact } from '../../models/Contact';
 import faker from 'faker';
-import { render, screen, within } from '@testing-library/react';
+import {logRoles, render, screen, within} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
 import { Provider } from 'react-redux';
@@ -11,7 +11,7 @@ import { applyMiddleware, createStore } from 'redux';
 
 function renderContactList() {
     const store = createStore(reducer, applyMiddleware(syncContactsWithStorageMiddleware));
-    render(
+    return render(
         <Provider store={store}>
             <ContactList />
         </Provider>
@@ -85,6 +85,23 @@ describe('Contact list functionality', () => {
             expect((screen.getByRole('button', { name: 'Añade nuevo contacto' }) as HTMLButtonElement).disabled).toBe(
                 expected
             );
+        });
+
+        it('Should search contacts from localstorage', () => {
+            const contactList = [new Contact(anyPhone, anyName, false), new Contact(anyOtherPhone, anyOtherName, true)];
+            localStorage.setItem('contacts', JSON.stringify(contactList));
+            renderContactList();
+
+            expect(screen.getAllByRole('row')).toHaveLength(3);
+            expect(screen.getByText(anyPhone)).toBeInTheDocument();
+            expect(screen.getByText(anyOtherPhone)).toBeInTheDocument();
+
+            const search = screen.getByRole('textbox', { name: /search/i })
+            userEvent.type(search,anyPhone);
+
+            expect(screen.getAllByRole('row')).toHaveLength( 2);
+            expect(screen.getByText(anyPhone)).toBeInTheDocument();
+            expect(screen.queryByText(anyOtherPhone)).not.toBeInTheDocument();
         });
     });
 
