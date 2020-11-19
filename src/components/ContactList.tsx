@@ -1,16 +1,69 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { useCallback, useState, useMemo } from 'react';
-import { Contact } from '../../models/Contact';
 import Table from 'react-bootstrap/Table';
-import { Button, IconButton } from '@material-ui/core';
-import StarIcon from '@material-ui/icons/Star';
-import * as contact from '../store/actions';
-import * as fromContacts from '../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
+
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
+import { AppBar, Button, IconButton, InputBase, Toolbar, Typography } from '@material-ui/core';
+import StarIcon from '@material-ui/icons/Star';
+import SearchIcon from '@material-ui/icons/Search';
+import { fade, makeStyles } from '@material-ui/core/styles';
+
+import { Contact } from '../../models/Contact';
+import * as contact from '../store/actions';
+import * as fromContacts from '../store/selectors';
 
 const REGEXP_STR = '^[0-9]{9}$';
+
+const useStyles = makeStyles((theme) => ({
+    title: {
+        flexGrow: 1,
+        display: 'none',
+        [theme.breakpoints.up('sm')]: {
+            display: 'block',
+        },
+    },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 0),
+        // vertical padding + font size from searchIcon
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: '12ch',
+            '&:focus': {
+                width: '20ch',
+            },
+        },
+    },
+}));
 
 function useInputPhone(contacts: Contact[]): [string, (event: React.ChangeEvent<HTMLInputElement>) => void, boolean] {
     const [inputPhone, setInputPhone] = useState('');
@@ -45,8 +98,10 @@ export const ContactList = () => {
     const contacts = useSelector(fromContacts.contactList);
     const dispatch = useDispatch();
     const [inputName, setInputName] = useState('');
+    const [searchValue, setSearchValue] = useState('');
     const [inputPhone, onChangePhone, isDisabled] = useInputPhone(contacts);
     const [joke, getJoke] = useChuckNorris();
+    const classes = useStyles();
 
     const setAsFav = useCallback(
         (favContact: Contact) => {
@@ -57,13 +112,29 @@ export const ContactList = () => {
     );
 
     return (
-        <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-        >
-            <TextField id="standard-basic" label="Search for contacts.." />
+        <>
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        {'super contact list!'.toUpperCase()}
+                    </Typography>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <SearchIcon />
+                        </div>
+                        <InputBase
+                            placeholder="Search.."
+                            classes={{
+                                root: classes.inputRoot,
+                                input: classes.inputInput,
+                            }}
+                            inputProps={{ 'aria-label': 'search' }}
+                            value={searchValue}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
+                        />
+                    </div>
+                </Toolbar>
+            </AppBar>
             <Table bordered hover>
                 <thead>
                     <tr>
@@ -98,11 +169,7 @@ export const ContactList = () => {
                 <label htmlFor="input-phone">Número</label>
                 <input type="text" id="input-phone" onChange={onChangePhone} pattern={REGEXP_STR} />
 
-                <Button
-                    variant="contained"
-                    disabled={isDisabled}
-                    type="submit"
-                >
+                <Button variant="contained" disabled={isDisabled} type="submit">
                     Añade nuevo contacto
                 </Button>
             </form>
@@ -113,6 +180,6 @@ export const ContactList = () => {
             </Button>
 
             <div>{joke}</div>
-        </Grid>
+        </>
     );
 };
