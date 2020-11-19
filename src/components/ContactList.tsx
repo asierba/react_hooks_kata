@@ -7,6 +7,8 @@ import StarIcon from '@material-ui/icons/Star';
 import * as contact from '../store/actions';
 import * as fromContacts from '../store/selectors';
 import { useDispatch, useSelector } from 'react-redux';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 const REGEXP_STR = '^[0-9]{9}$';
 
@@ -55,7 +57,13 @@ export const ContactList = () => {
     );
 
     return (
-        <>
+        <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+        >
+            <TextField id="standard-basic" label="Search for contacts.." />
             <Table bordered hover>
                 <thead>
                     <tr>
@@ -105,6 +113,6 @@ export const ContactList = () => {
             </Button>
 
             <div>{joke}</div>
-        </>
+        </Grid>
     );
 };
