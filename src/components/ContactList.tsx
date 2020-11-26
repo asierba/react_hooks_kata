@@ -144,7 +144,7 @@ export const ContactList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {contacts.filter((contact) => contact.phone.includes(searchValue) ).map((contact) => {
+                    {contacts.filter((contact) => contact.phone.includes(searchValue) || contact.name.includes(searchValue)).map((contact) => {
                         return (
                             <tr className={`contact ${contact.isFavorite ? 'favorite' : ''}`} key={contact.phone}>
                                 <td role="name">{contact.name}</td>

@@ -87,7 +87,7 @@ describe('Contact list functionality', () => {
             );
         });
 
-        it('Should search contacts from localstorage', () => {
+        it('Should search contacts by phonenumber', () => {
             const contactList = [new Contact(anyPhone, anyName, false), new Contact(anyOtherPhone, anyOtherName, true)];
             localStorage.setItem('contacts', JSON.stringify(contactList));
             renderContactList();
@@ -102,6 +102,23 @@ describe('Contact list functionality', () => {
             expect(screen.getAllByRole('row')).toHaveLength( 2);
             expect(screen.getByText(anyPhone)).toBeInTheDocument();
             expect(screen.queryByText(anyOtherPhone)).not.toBeInTheDocument();
+        });
+
+        it('Should search contacts by name', () => {
+            const contactList = [new Contact(anyPhone, anyName, false), new Contact(anyOtherPhone, anyOtherName, true)];
+            localStorage.setItem('contacts', JSON.stringify(contactList));
+            renderContactList();
+
+            expect(screen.getAllByRole('row')).toHaveLength(3);
+            expect(screen.getByText(anyName)).toBeInTheDocument();
+            expect(screen.getByText(anyOtherName)).toBeInTheDocument();
+
+            const search = screen.getByRole('textbox', { name: /search/i })
+            userEvent.type(search,anyName);
+
+            expect(screen.getAllByRole('row')).toHaveLength(2);
+            expect(screen.getByText(anyName)).toBeInTheDocument();
+            expect(screen.queryByText(anyOtherName)).not.toBeInTheDocument();
         });
     });
 
