@@ -1,18 +1,16 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { useCallback, useState, useMemo } from 'react';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import { AppBar, Button, IconButton, InputBase, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
-import SearchIcon from '@material-ui/icons/Search';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { Contact } from '../../models/Contact';
 import * as contact from '../store/actions';
 import * as fromContacts from '../store/selectors';
+import { Search } from './Search';
 
 const REGEXP_STR = '^[0-9]{9}$';
 
@@ -22,45 +20,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
         [theme.breakpoints.up('sm')]: {
             display: 'block',
-        },
-    },
-    search: {
-        position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
-        },
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(1),
-            width: 'auto',
-        },
-    },
-    searchIcon: {
-        padding: theme.spacing(0, 2),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    inputRoot: {
-        color: 'inherit',
-    },
-    inputInput: {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            width: '12ch',
-            '&:focus': {
-                width: '20ch',
-            },
         },
     },
 }));
@@ -118,21 +77,7 @@ export const ContactList = () => {
                     <Typography className={classes.title} variant="h6" noWrap>
                         {'super contact list!'.toUpperCase()}
                     </Typography>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <SearchIcon />
-                        </div>
-                        <InputBase
-                            placeholder="Search.."
-                            classes={{
-                                root: classes.inputRoot,
-                                input: classes.inputInput,
-                            }}
-                            inputProps={{ 'aria-label': 'search' }}
-                            value={searchValue}
-                            onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
-                        />
-                    </div>
+                    <Search searchValue={searchValue} onChange={setSearchValue} />
                 </Toolbar>
             </AppBar>
             <Table bordered hover>
